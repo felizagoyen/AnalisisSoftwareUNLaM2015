@@ -10,13 +10,14 @@ import java.util.ArrayList;
 public class FileReaderHelper {
 	
 	private String file;
+	private int lineNumber = 0;
 	private BufferedReader br = null;
 	
 	public FileReaderHelper(String file) {
 		this.file = file;
 		try {
 			br = new BufferedReader(new FileReader(this.file));
-			br.mark(0);
+			br.mark(0);			
 		} catch (FileNotFoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -30,17 +31,27 @@ public class FileReaderHelper {
 		String sCurrentLine = null;	
 		try {		
 			sCurrentLine = this.br.readLine();
+			lineNumber ++;
 		} catch (IOException e) {
 			e.printStackTrace();
-		} finally {
-			try {
-				if (this.br != null && sCurrentLine == null)this.br.close();
-			} catch (IOException ex) {
-				ex.printStackTrace();
-			}
-		}
+		} 
 		
 		return sCurrentLine;
+	}
+	
+	public void resetBuffer() {
+		
+		if(lineNumber > 0) {
+			System.out.println("acaa: " + lineNumber);
+			try {				
+				this.br.reset();
+				this.br.mark(0);
+				lineNumber = 0;
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	public boolean isDirectory() {

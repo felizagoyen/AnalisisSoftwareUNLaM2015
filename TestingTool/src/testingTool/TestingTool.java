@@ -79,7 +79,7 @@ public class TestingTool extends JFrame {
 				String file = openFileChooser();
 				if (file != null) {
 					Analizer analyzer = new Analizer(file);
-					labelPercent.setText("% " + analyzer.getCommentsPercent());
+					labelPercent.setText("% " + analyzer.fileSearch());
 				} else {
 					labelPercent.setText("%0");
 				}				
