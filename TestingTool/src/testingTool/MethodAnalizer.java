@@ -1,23 +1,30 @@
 package testingTool;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 
 public class MethodAnalizer {
 	private int codeLines;
 	private int cantCommentLines;
 	private int comentedCodeLines;
 	private int ciclomaticComplexity;
-	private int halsteadLength;
-	private int halsteadVolume;
 	private int fanIn;
 	private int fanOut;	
 	private int contadorLlaves;
+	private int n1;
+	private int N1;
+	private int n2;
+	private int N2;
+	private long halsteadLength;
+	private double halsteadVolume ;
 	
 	private boolean isMultipleComment = false;
 	private boolean isInsideMethod = false;
 	private boolean methodEnd = false;
 	
-	
+	private ArrayList<String> operadores = new ArrayList<String>();
+	private ArrayList<String> operandos = new ArrayList<String>();
 	
 	private String code;
 	private String filePath;
@@ -121,15 +128,52 @@ public class MethodAnalizer {
 	 * if ( aa == bb ) {
 	 * para poder tener bien separados los elementos y poder contar operadores y operandos
 	 */
-	public void halstead(String line) {
-		int index = 0;
-		String analizar = "";
+	public void halsteadLine(String line) {		
+		String[] operadoresPosibles = {  "auto", "extern", "register", "static", "typedef", "virtual", "mutable", "inline", "const", "friend", "volatile", "transient", "final", "break", "case",
+				"continue", "default", "do", "if", "else", "enum", "for", "goto", "if", "new", "return", "asm", "operator", "private", "protected", "public", "sizeof", "struct", "switch", "union",
+				"while", "this", "namespace", "using", "try", "catch", "throw", "throws", "finally", "strictfp", "instanceof", "interface", "extends", "implements", "abstract", "concrete",
+				"const_cast", "static_cast", "dynamic_cast", "reinterpret_cast", "typeid", "template", "explicit", "true", "false", "typename", "!=", "%=", "&&", "||", "&=",
+				"*=", "++", "+=", "--", "-=->", "/=", "::", "<<", "<<=", "<=", "==", ">=", ">>", ">>>", ">>=>>>=", "?",
+				 "^=", "|", "|=", "=&","~", "+",":","^", "&", ">", "/", ",", "-", "*", "%", "!", "<", "="};
+		String[] simbolos = {  "auto", "extern", "register", "static", "typedef", "virtual", "mutable", "inline", "const", "friend", "volatile", "transient", "final", "break", "case",
+				"continue", "default", "do", "if", "else", "enum", "for", "goto", "if", "new", "return", "asm", "operator", "private", "protected", "public", "sizeof", "struct", "switch", "union",
+				"while", "this", "namespace", "using", "try", "catch", "throw", "throws", "finally", "strictfp", "instanceof", "interface", "extends", "implements", "abstract", "concrete",
+				"const_cast", "static_cast", "dynamic_cast", "reinterpret_cast", "typeid", "template", "explicit", "true", "false", "typename", "!=", "%=", "&&", "||", "&=", "(", ")","/*","*/",
+				"{", "}", "[", "]", "*=", "++", "+=", "--", "-=->", "...", "/=", "::", "<<", "<<=", "<=", "==", ">=", ">>", ">>>", ">>=>>>=", "?",
+				 "^=", "|", "|=", "~", "=&", "#", "##", "~", "+", ".", ":","^", ";", "&", ">", "/", ",", "-", "*", "%", "!", "<", "="};
 		this.general(line);
 		prevLine = line;
 		line = sanitizeAndRemoveComments(line);
 		line = line.replace("\t", "").replace("( )+", " ").trim();
-		System.out.println("HALSTEAD");
-		System.out.println(normalizeCodeLine(line));		
+		
+		if(line.length() != 0) {
+			line = normalizeCodeLine(line);
+			String[] splitedLine = line.split(" ");
+			
+			for(String cad : splitedLine) {	
+				if(Arrays.asList(operadoresPosibles).contains(cad)) {
+					operadores.add(cad);
+				} else if(!Arrays.asList(simbolos).contains(cad)) {
+					operandos.add(cad);
+				}
+			}			
+		}				
+	}
+	
+	public void calcularHalstead() {
+		HashSet<String> operadoresSinRepetidos;
+		HashSet<String> operandosSinRepetidos = new HashSet<String>();
+		operadoresSinRepetidos = new HashSet<String>(operadores);
+		operandosSinRepetidos = new HashSet<String>(operandos);
+
+		n1 = operadoresSinRepetidos.size();
+		N1 = operadores.size();
+		n2 = operandosSinRepetidos.size();
+		N2 = operandos.size();
+		
+		halsteadLength = N1 + N2;
+		halsteadVolume = halsteadLength * log(n1 + n2, 2);
+		
 	}
 	
 /*
@@ -145,21 +189,20 @@ public class MethodAnalizer {
 		String[] simbolos = {  "auto", "extern", "register", "static", "typedef", "virtual", "mutable", "inline", "const", "friend", "volatile", "transient", "final", "break", "case",
 				"continue", "default", "do", "if", "else", "enum", "for", "goto", "if", "new", "return", "asm", "operator", "private", "protected", "public", "sizeof", "struct", "switch", "union",
 				"while", "this", "namespace", "using", "try", "catch", "throw", "throws", "finally", "strictfp", "instanceof", "interface", "extends", "implements", "abstract", "concrete",
-				"const_cast", "static_cast", "dynamic_cast", "reinterpret_cast", "typeid", "template", "explicit", "true", "false", "typename", "!", "!=", "%", "%=", "&", "&&", "||", "&=", "(", ")",
-				"{", "}", "[", "]", "*", "*=", "+", "++", "+=", ",", "-", "--", "-=->", ".", "...", "/", "/=", ":", "::", "<", "<<", "<<=", "<=", "=", "==", ">", ">=", ">>", ">>>", ">>=>>>=", "?",
-				"^", "^=", "|", "|=", "~", ";", "=&", "#", "##", "~"};
+				"const_cast", "static_cast", "dynamic_cast", "reinterpret_cast", "typeid", "template", "explicit", "true", "false", "typename", "!=", "%=", "&&", "||", "&=", "(", ")","/*","*/",
+				"{", "}", "[", "]", "*=", "++", "+=", "--", "-=->", "...", "/=", "::", "<<", "<<=", "<=", "==", ">=", ">>", ">>>", ">>=>>>=", "?",
+				 "^=", "|", "|=", "~", "=&", "#", "##", "~", "+", ".", ":","^", ";", "&", ">", "/", ",", "-", "*", "%", "!", "<", "="};
 		String[] splitedLine = line.split(" ");
 		String normalizedLine = "";
 		ArrayList<String> cadAux = new ArrayList<String>();
-		System.out.println(line);
+//		System.out.println(line);
 		for(String cad : splitedLine) {		
-			//System.out.println(cad);
-			int indexSimbolo;
-			boolean cadModified = false;
+			//System.out.println(cad);			
 			boolean hasOperator = false;
 			int i = 0;
 			while(cad.length() > 0) {
-				//System.out.println(cad);
+				hasOperator = false;
+//				System.out.println(cad);
 				String simboloSelected = "";
 				int indexSimboloSelected = -1;
 				for (String simbolo : simbolos){
@@ -171,7 +214,7 @@ public class MethodAnalizer {
 //						System.out.println("Simbolo encontrado en: " + indexSimboloSelected);
 					}					
 				}			
-				//System.out.println("Este puto " + indexSimboloSelected);
+//				System.out.println("Este puto " + indexSimboloSelected);
 				if (indexSimboloSelected >= 0) {	
 //					System.out.println("ENTRE???");
 //					System.out.println("Simbolo:" + simboloSelected);
@@ -187,7 +230,7 @@ public class MethodAnalizer {
 					if((indexSimboloSelected + simboloSelected.length()) == cad.length()) {
 						cad = "";
 					} else {
-						cad = cad.substring((indexSimboloSelected + simboloSelected.length()), (cad.length() -1));
+						cad = cad.substring((indexSimboloSelected + simboloSelected.length()), (cad.length()));
 					}
 //					System.out.println("Resto cad: " + cad);					
 					hasOperator = true;					
@@ -285,6 +328,10 @@ public class MethodAnalizer {
 			}
 		}
 		
+	}	
+	
+	private static double log(double x, int base) {
+		return Math.log(x) / Math.log(base);
 	}
 	
 	/*
@@ -351,7 +398,7 @@ public class MethodAnalizer {
 		this.ciclomaticComplexity = ciclomaticComplexity;
 	}
 
-	public int getHalsteadLength() {
+	public long getHalsteadLength() {
 		return halsteadLength;
 	}
 
@@ -359,7 +406,7 @@ public class MethodAnalizer {
 		this.halsteadLength = halsteadLength;
 	}
 
-	public int getHalsteadVolume() {
+	public double getHalsteadVolume() {
 		return halsteadVolume;
 	}
 

@@ -54,12 +54,13 @@ public class Analizer {
 			while((line = fileHelper.getLine()) != null) {				
 				allResults.get(i).calcComments(line);
 				allResults.get(i).complejidadCiclomatica(line);
-				allResults.get(i).halstead(line);
+				allResults.get(i).halsteadLine(line);
 				if(allResults.get(i).isMethodString(line)) { // Linea en donde muestra el comienzo del metodo
 					codigoAnalizador = new MethodAnalizer();					
 				} else if(allResults.get(i).isInsideMethod()) { // Adentro del metodo
 					codigoAnalizador.calcComments(line);
 					codigoAnalizador.complejidadCiclomatica(line);
+					codigoAnalizador.halsteadLine(line);
 					codigoAnalizador.getCantCommentLines();
 					if(codigoAnalizador.methodEnd()) { // Cuando termina el metodo guardo su analisis en el array						
 						newResults.add(codigoAnalizador);
@@ -68,38 +69,23 @@ public class Analizer {
 			}
 		}
 		this.allResults.addAll(newResults);
+		for(int i = 0 ; i < allResults.size(); i++) {
+			allResults.get(i).calcularHalstead();
+		}
+		
 	}
+	
+	/*
+	 * Esta es la funcion en donde van a estar todos los datos calculados 
+	 */
 	public void mostrar() {
 		System.out.println("Cantidad de registros: " + allResults.size());
 		for(int i = 0 ; i < allResults.size(); i++) {
 			System.out.println("Mostrando Cantidad de Comentarios: " + allResults.get(i).getCantCommentLines());
 			System.out.println("Mostrando Complejidad ciclomatica: " + allResults.get(i).getCiclomaticComplexity());
+			System.out.println("Longitud de halstead: " + allResults.get(i).getHalsteadLength());
+			System.out.println("Volumen de halstead: " + allResults.get(i).getHalsteadVolume());
 		}
-	}
-	
-	public float getCommentsPercentFromFile(FileReaderHelper fileHelper) {
-		String line;
-		boolean isMultipleComment = false;
-		int cantCommentLines = 0;
-		int cantLines = 0;
-		fileHelper.resetBuffer();
-		while((line = fileHelper.getLine()) != null) {
-			cantLines ++;
-			if(isMultipleComment) {
-				cantCommentLines ++;
-				if(line.indexOf("*/") != -1) {
-					isMultipleComment = false;
-				}
-			} else {
-				if(line.indexOf("/*") != -1) {
-					isMultipleComment = true;
-					cantCommentLines ++;
-				}
-				if(line.indexOf("//") != -1) {
-					cantCommentLines ++;
-				}
-			}			
-		}
-		return (cantCommentLines * 100) / cantLines;
+		
 	}
 }
