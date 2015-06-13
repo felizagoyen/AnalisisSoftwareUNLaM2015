@@ -2,7 +2,7 @@ package run;
 
 import java.awt.EventQueue;
 
-import vistas.TestingTool;
+import vistas.*;
 
 public class Main {
 
@@ -13,7 +13,7 @@ public class Main {
 	EventQueue.invokeLater(new Runnable() {
 	    public void run() {
 		try {
-		    TestingTool frame = new TestingTool();
+		    TestingTool2 frame = new TestingTool2();
 		    frame.setVisible(true);
 		} catch (Exception e) {
 		    e.printStackTrace();
