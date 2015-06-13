@@ -1,4 +1,4 @@
-package testingTool;
+package core;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,7 +35,10 @@ public class MethodAnalizer {
 	
 	public MethodAnalizer(FileReaderHelper file) {
 		this.file = file;
+		this.fileName = file.getFile();
+		this.code = file.getTextFile();
 	}
+	
 	public MethodAnalizer() {
 		
 	}
