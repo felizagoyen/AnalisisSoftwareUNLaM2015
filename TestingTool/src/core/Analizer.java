@@ -63,6 +63,7 @@ public class Analizer {
 		ArrayList<String> functionsFromLine = new ArrayList<String>();
 		Map<String, Integer>  allFunctions = new HashMap<String, Integer>();
 		for (int i = 0; i < allResults.size(); i++) {
+			int c = 0;
 			FileReaderHelper fileHelper;
 			fileHelper = allResults.get(i).getFile();
 			while ((line = fileHelper.getLine()) != null) {
@@ -98,7 +99,9 @@ public class Analizer {
 					if (codigoAnalizador.methodEnd()) { // Cuando termina el
 						// metodo guardo su
 						// analisis en el array
+						c++;
 						codigoAnalizador.setFileName(fileHelper.fileName());
+						codigoAnalizador.setReference(c + ". " + codigoAnalizador.getReference());
 						newResults.add(codigoAnalizador);
 						codigoAnalizador.setMethodEnd(false);
 					}
