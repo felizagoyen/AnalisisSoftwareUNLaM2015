@@ -368,7 +368,7 @@ public class MethodAnalizer {
 				contadorLlaves++;
 			} else if (line.contains("}")) {
 				contadorLlaves--;				
-				if(contadorLlaves <= -1){
+				if(contadorLlaves <= 0){
 					this.isInsideMethod = false;
 					this.methodEnd = true;
 					
