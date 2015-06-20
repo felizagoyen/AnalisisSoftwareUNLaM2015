@@ -66,7 +66,7 @@ public class TestingTool extends JFrame {
 			    percentComments = "0 %";
 			}
 			
-			JPanel panel = PanelFactory.getPanel(result.getFileName(), result.getCode(), percentComments, String.valueOf(result.getCiclomaticComplexity()), String.valueOf(result.getHalsteadLength()), String.valueOf(result.getHalsteadVolume()));
+			JPanel panel = PanelFactory.getPanel(result.getReference(), result.getCode(), percentComments, String.valueOf(result.getCiclomaticComplexity()), String.valueOf(result.getHalsteadLength()), String.valueOf(result.getHalsteadVolume()),String.valueOf(result.getFanIn()),String.valueOf(result.getFanOut()));
 			tabbedPane.addTab(panel.getToolTipText(), null, panel, null);
 		    }		    
 		}

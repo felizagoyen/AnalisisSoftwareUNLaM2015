@@ -5,6 +5,12 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 public class MethodAnalizer {
+	
+	private boolean isFunction; // Indica si es funcion o es un archivo
+	
+
+	private String reference; //Nombre del archivo o la funcion
+	
 	private int codeLines;
 	private int cantCommentLines;
 	private int comentedCodeLines;
@@ -26,21 +32,36 @@ public class MethodAnalizer {
 	private ArrayList<String> operadores = new ArrayList<String>();
 	private ArrayList<String> operandos = new ArrayList<String>();
 	
-	private String code;
+	private String code = "";
 	private String filePath;
 	private String fileName;
-	private String prevLine;//La funcion general se debe ejecutar solo una vez por linea
+	private String prevLine = "----1----";//La funcion general se debe ejecutar solo una vez por linea
 	private FileReaderHelper file;
 	
 	
 	public MethodAnalizer(FileReaderHelper file) {
+		this.reference = file.getFile();
 		this.file = file;
-		this.fileName = file.getFile();
+		this.reference = this.fileName = file.getFile();
 		this.code = file.getTextFile();
+		this.isFunction = false;
 	}
 	
-	public MethodAnalizer() {
-		
+	public MethodAnalizer(String line) {
+		this.code += line + "\n";		
+		line = sanitizeAndRemoveComments(line);
+		line = line.replace("\t", "").replace("( )+", " ").trim();
+		line = normalizeCodeLine(line);
+		String[] splitedLine = line.split(" ");
+		String cadAnterior = ""; // Se analiza como posible funcion, si en la siguiente cadena se encuentra un "(" se toma que cadAnterior es una funcion			
+		for(String cad : splitedLine) {
+			if(cad.equals("(") && !cadAnterior.equals("")) {					
+				this.reference = cadAnterior;
+				this.isFunction = true;		
+				break;
+			}
+			cadAnterior = cad;
+		}
 	}
 	/*
 	 * Calcula la cantidad de comentarios
@@ -179,13 +200,34 @@ public class MethodAnalizer {
 		
 	}
 	
+	/*
+	 * Devuelve las funciones que encuentra en la linea de codigo
+	 */
+	public ArrayList getFunctions(String line) {
+		this.general(line);
+		prevLine = line;
+		line = sanitizeAndRemoveComments(line);
+		line = line.replace("\t", "").replace("( )+", " ").trim();
+		line = normalizeCodeLine(line);
+		String[] splitedLine = line.split(" ");
+		String cadAnterior = ""; // Se analiza como posible funcion, si en la siguiente cadena se encuentra un "(" se toma que cadAnterior es una funcion
+		ArrayList<String> funciones = new ArrayList<String>();
+		for(String cad : splitedLine) {
+			if(cad.equals("(") && !cadAnterior.equals("") && esOperador(cadAnterior) == -1) {
+				fanOut ++;
+				funciones.add(cadAnterior);
+			}
+			cadAnterior = cad;
+		}		
+		return funciones;
+	}
+	
 /*
  * Esta funcion normaliza las lineas de codigo separando cada elemento con un espacio. Para luego poder
  * al normalizarla convierto esto:
  * if(aa==bb){
  * En esto
  * if ( aa == bb ) {
- * Aun queda por corregir un par de boludeces aca
  */
 	
 	private String normalizeCodeLine(String line) {
@@ -198,7 +240,6 @@ public class MethodAnalizer {
 		String[] splitedLine = line.split(" ");
 		String normalizedLine = "";
 		ArrayList<String> cadAux = new ArrayList<String>();
-//		System.out.println(line);
 		for(String cad : splitedLine) {		
 			//System.out.println(cad);			
 			boolean hasOperator = false;
@@ -294,9 +335,7 @@ public class MethodAnalizer {
 	}
 	
 	
-	public boolean isMethodString(String linea) {
-		this.general(linea);
-		prevLine = linea;
+	public boolean isMethodString(String linea) {		
 		if ((linea.contains("public") || linea.contains("private") || linea.contains("protected")) && linea.contains("(")){
 			this.isInsideMethod = true;
 			return true;
@@ -304,7 +343,6 @@ public class MethodAnalizer {
 		return false;
 	}
 	public boolean isInsideMethod() {
-		
 		return this.isInsideMethod;
 	}
 	public boolean methodEnd() {		
@@ -317,8 +355,15 @@ public class MethodAnalizer {
 		
 	}
 	
-	public void general(String line) {		
+	public void general(String line) {	
 		if(line != this.prevLine) {
+			if(isMethodString(line)) {
+				fanOut --;
+			}
+			if(this.isFunction) {
+				this.code += line + "\n";
+			}
+			
 			if (line.contains("{")) {
 				contadorLlaves++;
 			} else if (line.contains("}")) {
@@ -473,6 +518,20 @@ public class MethodAnalizer {
 		this.cantCommentLines = cantCommentLines;
 	}
 
-	
+	public boolean isFunction() {
+		return isFunction;
+	}
+
+	public void setFunction(boolean isFunction) {
+		this.isFunction = isFunction;
+	}
+
+	public String getReference() {
+		return reference;
+	}
+
+	public void setReference(String reference) {
+		this.reference = reference;
+	}
 	
 }

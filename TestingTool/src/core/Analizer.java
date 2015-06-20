@@ -1,6 +1,8 @@
 package core;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Analizer {
 
@@ -33,10 +35,13 @@ public class Analizer {
 			ArrayList<String> filesPath = new ArrayList<String>();
 			filesPath = FileReaderHelper.listAllFilesFromFolder(this.path);
 			for (int i = 0; i < filesPath.size(); i++) {
-				String extension = filesPath.get(i).substring(filesPath.get(i).lastIndexOf(".") + 1, filesPath.get(i).length());
+				String extension = filesPath.get(i).substring(
+						filesPath.get(i).lastIndexOf(".") + 1,
+						filesPath.get(i).length());
 				if (extAccepted.equalsIgnoreCase(extension)) {
 					cantFiles++;
-					allResults.add(new MethodAnalizer(new FileReaderHelper(filesPath.get(i))));
+					allResults.add(new MethodAnalizer(new FileReaderHelper(
+							filesPath.get(i))));
 				}
 			}
 		} else { // Caso en el que es solo un archivo
@@ -52,9 +57,11 @@ public class Analizer {
 
 	private void analize() {
 		String line = "";
-		MethodAnalizer codigoAnalizador = new MethodAnalizer();
+		MethodAnalizer codigoAnalizador = new MethodAnalizer("");// rompe ya que el new lo hago dentro de los if
 		// Por los metodos que se agregan
 		ArrayList<MethodAnalizer> newResults = new ArrayList<MethodAnalizer>();
+		ArrayList<String> functionsFromLine = new ArrayList<String>();
+		Map<String, Integer>  allFunctions = new HashMap<String, Integer>();
 		for (int i = 0; i < allResults.size(); i++) {
 			FileReaderHelper fileHelper;
 			fileHelper = allResults.get(i).getFile();
@@ -62,17 +69,32 @@ public class Analizer {
 				allResults.get(i).calcComments(line);
 				allResults.get(i).complejidadCiclomatica(line);
 				allResults.get(i).halsteadLine(line);
+				functionsFromLine = allResults.get(i).getFunctions(line);
+				if(!allResults.get(i).isMethodString(line)) {
+					
+					for (int j = 0; j < functionsFromLine.size(); j++) {
+						if(!allFunctions.containsKey(functionsFromLine.get(j))) {
+							allFunctions.put(functionsFromLine.get(j), 1);
+						} else {
+							int timesFunctionCalled = allFunctions.get(functionsFromLine.get(j));
+							timesFunctionCalled ++;
+							allFunctions.put(functionsFromLine.get(j), timesFunctionCalled);
+						}					
+					}
+				}
+				
 				if (allResults.get(i).isMethodString(line)) { // Linea en donde
 					// muestra el
 					// comienzo del
-					// metodo
-					codigoAnalizador = new MethodAnalizer();
+					// metodo					
+					codigoAnalizador = new MethodAnalizer(line); // Le paso la linea para que la analice y setee el nombre y si es funcion
 				} else if (allResults.get(i).isInsideMethod()) { // Adentro del
 					// metodo
 					codigoAnalizador.calcComments(line);
 					codigoAnalizador.complejidadCiclomatica(line);
 					codigoAnalizador.halsteadLine(line);
 					codigoAnalizador.getCantCommentLines();
+					codigoAnalizador.getFunctions(line);
 					if (codigoAnalizador.methodEnd()) { // Cuando termina el
 						// metodo guardo su
 						// analisis en el array
@@ -82,9 +104,19 @@ public class Analizer {
 			}
 		}
 		this.allResults.addAll(newResults);
-		for (int i = 0; i < allResults.size(); i++) {
+		for (int i = 0; i < allResults.size(); i++) {			
 			allResults.get(i).calcularHalstead();
+			for (Map.Entry<String, Integer> entry : allFunctions.entrySet()) {
+			    String key = entry.getKey();
+			    int value = entry.getValue();
+			    if(key.equals(allResults.get(i).getReference()) ) {
+			    	allResults.get(i).setFanIn(value);
+			    }
+			    System.out.println(key + " " + value);
+			}
 		}
+		
+		
 
 	}
 
@@ -94,10 +126,14 @@ public class Analizer {
 	public void mostrar() {
 		System.out.println("Cantidad de registros: " + allResults.size());
 		for (int i = 0; i < allResults.size(); i++) {
-			System.out.println("Mostrando Cantidad de Comentarios: " + allResults.get(i).getCantCommentLines());
-			System.out.println("Mostrando Complejidad ciclomatica: " + allResults.get(i).getCiclomaticComplexity());
-			System.out.println("Longitud de halstead: " + allResults.get(i).getHalsteadLength());
-			System.out.println("Volumen de halstead: " + allResults.get(i).getHalsteadVolume());
+//			System.out.println("Mostrando Cantidad de Comentarios: "
+//					+ allResults.get(i).getCantCommentLines());
+//			System.out.println("Mostrando Complejidad ciclomatica: "
+//					+ allResults.get(i).getCiclomaticComplexity());
+//			System.out.println("Longitud de halstead: "
+//					+ allResults.get(i).getHalsteadLength());
+//			System.out.println("Volumen de halstead: "
+//					+ allResults.get(i).getHalsteadVolume());
 		}
 
 	}

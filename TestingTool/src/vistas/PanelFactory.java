@@ -22,7 +22,7 @@ public class PanelFactory {
     private static final String TITLE_FAN_IN = "Fan in";
     private static final String TITLE_FAN_OUT = "Fan out";
     
-    public static JPanel getPanel(String name, String code, String porcentComentarios, String complejidadCiclomatica, String longitud, String volumen) {
+    public static JPanel getPanel(String name, String code, String porcentComentarios, String complejidadCiclomatica, String longitud, String volumen,String fanIn,String fanOut) {
 	
 	String title = ((name != null && !name.isEmpty())?(name):(UNNAMED_TITLE));
 	String codeFinal = ((code != null && !code.isEmpty())?(code):(UNNAMED_VALUE));
@@ -30,6 +30,8 @@ public class PanelFactory {
 	String complejidadCiclomaticaFinal = ((complejidadCiclomatica != null && !complejidadCiclomatica.isEmpty())?(complejidadCiclomatica):(UNNAMED_VALUE));
 	String longitudFinal = ((longitud != null && !longitud.isEmpty())?(longitud):(UNNAMED_VALUE));
 	String volumenFinal = ((volumen != null && !volumen.isEmpty())?(volumen):(UNNAMED_VALUE));
+	String fanInFinal = ((fanIn != null && !fanIn.isEmpty())?(fanIn):(UNNAMED_VALUE));
+	String fanOutFinal = ((fanOut != null && !fanOut.isEmpty())?(fanOut):(UNNAMED_VALUE));
 	
 	JTextField txtPorcentajeDeComentarios;
 	JTextField txtComplejidadCiclomatica;
@@ -101,19 +103,19 @@ public class PanelFactory {
 	panel_3.add(txtVolumen, "cell 0 3,growx");
 	txtVolumen.setColumns(10);
 	
-//	txtFanIn = new JTextField();
-//	txtFanIn.setEditable(false);
-//	txtFanIn.setHorizontalAlignment(SwingConstants.CENTER);
-//	txtFanIn.setText(TITLE_FAN_IN);
-//	panel_3.add(txtFanIn, "cell 0 4,growx");
-//	txtFanIn.setColumns(10);
-//	
-//	txtFanOut = new JTextField();
-//	txtFanOut.setEditable(false);
-//	txtFanOut.setHorizontalAlignment(SwingConstants.CENTER);
-//	txtFanOut.setText(TITLE_FAN_OUT);
-//	panel_3.add(txtFanOut, "cell 0 5,growx");
-//	txtFanOut.setColumns(10);
+	txtFanIn = new JTextField();
+	txtFanIn.setEditable(false);
+	txtFanIn.setHorizontalAlignment(SwingConstants.CENTER);
+	txtFanIn.setText(TITLE_FAN_IN);
+	panel_3.add(txtFanIn, "cell 0 4,growx");
+	txtFanIn.setColumns(10);
+	
+	txtFanOut = new JTextField();
+	txtFanOut.setEditable(false);
+	txtFanOut.setHorizontalAlignment(SwingConstants.CENTER);
+	txtFanOut.setText(TITLE_FAN_OUT);
+	panel_3.add(txtFanOut, "cell 0 5,growx");
+	txtFanOut.setColumns(10);
 	
 	JPanel panel_4 = new JPanel();
 	splitPane_2.setRightComponent(panel_4);
@@ -147,19 +149,19 @@ public class PanelFactory {
 	txtValueVolumen.setColumns(10);
 	panel_4.add(txtValueVolumen, "cell 0 3,growx");
 	
-//	txtValueFanIn = new JTextField();
-//	txtValueFanIn.setEditable(false);
-//	txtValueFanIn.setText(fanInFinal);
-//	txtValueFanIn.setHorizontalAlignment(SwingConstants.CENTER);
-//	txtValueFanIn.setColumns(10);
-//	panel_4.add(txtValueFanIn, "cell 0 4,growx");
-//	
-//	txtValueFanOut = new JTextField();
-//	txtValueFanOut.setEditable(false);
-//	txtValueFanOut.setText(fanOutFinal);
-//	txtValueFanOut.setHorizontalAlignment(SwingConstants.CENTER);
-//	txtValueFanOut.setColumns(10);
-//	panel_4.add(txtValueFanOut, "cell 0 5,growx");
+	txtValueFanIn = new JTextField();
+	txtValueFanIn.setEditable(false);
+	txtValueFanIn.setText(fanInFinal);
+	txtValueFanIn.setHorizontalAlignment(SwingConstants.CENTER);
+	txtValueFanIn.setColumns(10);
+	panel_4.add(txtValueFanIn, "cell 0 4,growx");
+	
+	txtValueFanOut = new JTextField();
+	txtValueFanOut.setEditable(false);
+	txtValueFanOut.setText(fanOutFinal);
+	txtValueFanOut.setHorizontalAlignment(SwingConstants.CENTER);
+	txtValueFanOut.setColumns(10);
+	panel_4.add(txtValueFanOut, "cell 0 5,growx");
 	
 	return panel;
     }
