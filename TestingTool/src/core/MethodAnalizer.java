@@ -42,7 +42,7 @@ public class MethodAnalizer {
 	public MethodAnalizer(FileReaderHelper file) {
 		this.reference = file.getFile();
 		this.file = file;
-		this.reference = this.fileName = file.getFile();
+		this.reference = this.fileName = file.fileName();
 		this.code = file.getTextFile();
 		this.isFunction = false;
 	}
@@ -532,6 +532,10 @@ public class MethodAnalizer {
 
 	public void setReference(String reference) {
 		this.reference = reference;
+	}
+	
+	public void setMethodEnd(Boolean end) {
+		this.methodEnd = end;
 	}
 	
 }

@@ -4,6 +4,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -11,13 +12,19 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+
 import core.Analizer;
 import core.MethodAnalizer;
+
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+
 import net.miginfocom.swing.MigLayout;
+
 import java.awt.TextArea;
 import java.awt.Color;
+import java.util.ArrayList;
+
 import javax.swing.border.EtchedBorder;
 
 public class TestingTool2 extends JFrame {
@@ -78,31 +85,44 @@ public class TestingTool2 extends JFrame {
 		txtCode.setBounds(29, 154, 739, 282);
 		contentPane.add(txtCode);
 
+		comboMethods = new JComboBox<String>();
 		comboClass = new JComboBox<String>();
 		comboClass.setEnabled(false);
 		comboClass.setBounds(29, 82, 345, 34);		
 		comboClass.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e)  {
-				MethodAnalizer firstClass = analyzer.getAllResults().get(0);
-				refreshView(firstClass.getCode(),
-						firstClass.getComentedCodeLines(),
-						firstClass.getCiclomaticComplexity(),
-						firstClass.getHalsteadLength(),
-						firstClass.getHalsteadVolume(),
-						firstClass.getFanIn(),
-						firstClass.getFanOut()
-						);	
+				ArrayList<MethodAnalizer> analizer = analyzer.getAllResults();
+				comboMethods.removeAllItems();
+				comboMethods.addItem("All Methods");
+				for(MethodAnalizer method: analizer) {
+					if(method.isFunction() && comboClass.getSelectedItem().toString().equals(method.getFileName())) {
+						comboMethods.addItem(method.getReference());
+					}
+				}
 			}
 		});
 		contentPane.add(comboClass);
 
-		comboMethods = new JComboBox<String>();
 		comboMethods.setEnabled(false);
 		comboMethods.setBounds(413, 82, 355, 34);
-		comboClass.addActionListener(new ActionListener() {
+		comboMethods.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e)  {
-				comboMethods.removeAllItems();
-				comboMethods.addItem("All Methods");
+				if(comboMethods.getSelectedItem() != null) {
+					ArrayList<MethodAnalizer> analizer = analyzer.getAllResults();
+					for(MethodAnalizer method: analizer) {
+						if((comboMethods.getSelectedItem().toString().equals("All Methods") && !method.isFunction() && comboClass.getSelectedItem().toString().equals(method.getFileName())) || 
+								method.getReference().equals(comboMethods.getSelectedItem().toString())) {
+							refreshView(method.getCode(),
+									method.getComentedCodeLines(),
+									method.getCiclomaticComplexity(),
+									method.getHalsteadLength(),
+									method.getHalsteadVolume(),
+									method.getFanIn(),
+									method.getFanOut()
+									);	
+						}
+					}
+				}
 			}
 		});
 		contentPane.add(comboMethods);
@@ -121,11 +141,23 @@ public class TestingTool2 extends JFrame {
 					txtPath.setText(path);
 					analyzer = new Analizer(path);
 					for (MethodAnalizer result : analyzer.getAllResults()) {
-						comboClass.addItem(result.getFileName());
+						if(!result.isFunction() && result.getFileName() != null) {
+							comboClass.addItem(result.getFileName());
+						}
 					}		    
 
 					comboClass.setEnabled(true);
 					comboMethods.setEnabled(true);
+					
+					MethodAnalizer method = analyzer.getAllResults().get(0);
+					refreshView(method.getCode(),
+							method.getComentedCodeLines(),
+							method.getCiclomaticComplexity(),
+							method.getHalsteadLength(),
+							method.getHalsteadVolume(),
+							method.getFanIn(),
+							method.getFanOut()
+							);
 				}
 
 			}

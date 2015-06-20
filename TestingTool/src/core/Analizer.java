@@ -36,7 +36,7 @@ public class Analizer {
 			filesPath = FileReaderHelper.listAllFilesFromFolder(this.path);
 			for (int i = 0; i < filesPath.size(); i++) {
 				String extension = filesPath.get(i).substring(
-						filesPath.get(i).lastIndexOf(".") + 1,
+						filesPath.get(i).lastIndexOf(".") + 1,	
 						filesPath.get(i).length());
 				if (extAccepted.equalsIgnoreCase(extension)) {
 					cantFiles++;
@@ -98,7 +98,9 @@ public class Analizer {
 					if (codigoAnalizador.methodEnd()) { // Cuando termina el
 						// metodo guardo su
 						// analisis en el array
+						codigoAnalizador.setFileName(fileHelper.fileName());
 						newResults.add(codigoAnalizador);
+						codigoAnalizador.setMethodEnd(false);
 					}
 				}
 			}

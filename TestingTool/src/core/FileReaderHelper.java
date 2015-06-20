@@ -59,13 +59,17 @@ public class FileReaderHelper {
     }
 
     public boolean isDirectory() {
-	return new File(this.file).isDirectory();
+    	return new File(this.file).isDirectory();
     }
 
     public static boolean isDirectory(String file) {
-	return new File(file).isDirectory();
+    	return new File(file).isDirectory();
     }
 
+    public String fileName() {
+    	return new File(file).getName();
+    }
+    
     public static ArrayList<String> listAllFilesFromFolder(String folderStr) {
 	File folder = new File(folderStr);
 	ArrayList<String> filesPath = new ArrayList<String>();
