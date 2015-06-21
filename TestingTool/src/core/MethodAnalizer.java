@@ -542,4 +542,11 @@ public class MethodAnalizer {
 		this.isInsideMethod = isInside;
 	}
 	
+	public float getPercentCommentedLines() {
+	    float percent = 0;
+	    if (codeLines > 0) {
+		percent = (float) cantCommentLines / codeLines * 100;
+	    }
+	    return percent;
+	}
 }

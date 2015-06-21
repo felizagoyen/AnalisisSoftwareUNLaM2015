@@ -113,7 +113,7 @@ public class TestingTool2 extends JFrame {
 						if((comboMethods.getSelectedItem().toString().equals("All Methods") && !method.isFunction() && comboClass.getSelectedItem().toString().equals(method.getFileName())) || 
 								method.getReference().equals(comboMethods.getSelectedItem().toString())) {
 							refreshView(method.getCode(),
-									method.getComentedCodeLines(),
+									method.getPercentCommentedLines(),
 									method.getCiclomaticComplexity(),
 									method.getHalsteadLength(),
 									method.getHalsteadVolume(),
@@ -151,7 +151,7 @@ public class TestingTool2 extends JFrame {
 					
 					MethodAnalizer method = analyzer.getAllResults().get(0);
 					refreshView(method.getCode(),
-							method.getComentedCodeLines(),
+							method.getPercentCommentedLines(),
 							method.getCiclomaticComplexity(),
 							method.getHalsteadLength(),
 							method.getHalsteadVolume(),
@@ -307,14 +307,15 @@ public class TestingTool2 extends JFrame {
 
 	private void cleanScreen() {
 		txtPath.setText(VALUE_PATH_DEFAULT);
-		comboClass.removeAllItems();
-		comboMethods.removeAllItems();
+		comboClass.removeAll();
+		comboMethods.removeAll();
 		refreshView("", 0, 0, 0, 0.0, 0, 0);
 	}
 
-	private void refreshView(String code, int percentageCommentsValue, int cyclomaticComplexityValue, long lengthValue, double volumeValue, int fanInValue, int fanOutValue) {
+	private void refreshView(String code, float percentageCommentsValue, int cyclomaticComplexityValue, long lengthValue, double volumeValue, int fanInValue, int fanOutValue) {
 		txtCode.setText(code);
-		txtPercentageCommentsValue.setText(Integer.toString(percentageCommentsValue) + " %");
+		txtCode.repaint();
+		txtPercentageCommentsValue.setText(Float.toString(percentageCommentsValue) + " %");
 		txtCyclomaticComplexityValue.setText(Integer.toString(cyclomaticComplexityValue));
 		txtLengthValue.setText(Long.toString(lengthValue));
 		txtVolumeValue.setText(Double.toString(volumeValue));

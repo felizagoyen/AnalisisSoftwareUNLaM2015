@@ -14,6 +14,9 @@ public class Triangle {
 		this.side3 = side3;
 	}
 	
+	/*
+	 * metodo que calcula
+	 */
 	public String type() {
 		if(side1.equals(side2) && side2.equals(side3)) 
 			return "Equilatero";
@@ -25,6 +28,7 @@ public class Triangle {
 	public static void main(String[] args) {
 		Scanner input = new Scanner(System.in); 
 		
+		// printlines
 		System.out.println("Ingrese el valor del lado 1: ");
 		Integer side1 = input.nextInt();
 		System.out.println("Ingrese el valor del lado 2: ");
