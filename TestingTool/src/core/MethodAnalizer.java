@@ -538,4 +538,8 @@ public class MethodAnalizer {
 		this.methodEnd = end;
 	}
 	
+	public void setIsInsideMethod(Boolean isInside) {
+		this.isInsideMethod = isInside;
+	}
+	
 }

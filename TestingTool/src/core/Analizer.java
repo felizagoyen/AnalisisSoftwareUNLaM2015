@@ -104,6 +104,7 @@ public class Analizer {
 						codigoAnalizador.setReference(c + ". " + codigoAnalizador.getReference());
 						newResults.add(codigoAnalizador);
 						codigoAnalizador.setMethodEnd(false);
+						allResults.get(i).setIsInsideMethod(false);
 					}
 				}
 			}
