@@ -7,8 +7,6 @@ import java.util.Map;
 public class Analizer {
 
 	private String path;
-	// private FileReaderHelper fileHelper;
-	private int cantFiles = 0;
 	private ArrayList<MethodAnalizer> allResults = new ArrayList<MethodAnalizer>();
 
 	public Analizer(String path) {
@@ -26,7 +24,6 @@ public class Analizer {
 		int cantFiles = 0;
 		float prcentTotalComments = 0;
 		String extAccepted = "java";
-		MethodAnalizer res;
 		if (FileReaderHelper.isDirectory(this.path)) { // En caso que sea
 			// directorio Los busco
 			// y los meto en un
@@ -70,7 +67,6 @@ public class Analizer {
 				allResults.get(i).calcComments(line);
 				allResults.get(i).complejidadCiclomatica(line);
 				allResults.get(i).halsteadLine(line);
-				functionsFromLine = allResults.get(i).getFunctions(line);
 				if(!allResults.get(i).isMethodString(line)) {
 					
 					for (int j = 0; j < functionsFromLine.size(); j++) {

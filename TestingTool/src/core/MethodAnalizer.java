@@ -104,19 +104,18 @@ public class MethodAnalizer {
 		
 		//A esta altura le removi todos los comentarios al codigo, si tiene longitud hay codigo		
 		if(line.length() > 0) {							
-			//Ver si esto funciona
-			if (line.indexOf("if(") != -1){
+			if (line.indexOf("if(") != -1 || line.indexOf("if (") != -1)
 				contador++;	
-			}
-			if (line.indexOf("while(") != -1)
+			
+			if (line.indexOf("while(") != -1 || line.indexOf("while (") != -1)
 				contador++;
 
-			if (line.indexOf("switch(") != -1)
+			if (line.indexOf("for(") != -1 || line.indexOf("for (") != -1)
 				contador++;
 
-			if (line.indexOf("for(") != -1)
+			if (line.matches("case(.+):"))
 				contador++;
-
+			
 			indice = line.indexOf("&&");
 			while (indice != -1) {
 				contador++;
@@ -203,7 +202,7 @@ public class MethodAnalizer {
 	/*
 	 * Devuelve las funciones que encuentra en la linea de codigo
 	 */
-	public ArrayList getFunctions(String line) {
+	public ArrayList<String> getFunctions(String line) {
 		this.general(line);
 		prevLine = line;
 		line = sanitizeAndRemoveComments(line);
@@ -241,42 +240,29 @@ public class MethodAnalizer {
 		String normalizedLine = "";
 		ArrayList<String> cadAux = new ArrayList<String>();
 		for(String cad : splitedLine) {		
-			//System.out.println(cad);			
 			boolean hasOperator = false;
-			int i = 0;
 			while(cad.length() > 0) {
 				hasOperator = false;
-//				System.out.println(cad);
 				String simboloSelected = "";
 				int indexSimboloSelected = -1;
 				for (String simbolo : simbolos){
-					//System.out.println(cad.indexOf(simbolo) + " < " + indexSimboloSelected);
 					if ( (cad.indexOf(simbolo) >= 0 && cad.indexOf(simbolo) < indexSimboloSelected) || (indexSimboloSelected == -1 && cad.indexOf(simbolo) >= 0) ) {
-//						System.out.println("Entre");
 						indexSimboloSelected = cad.indexOf(simbolo);
 						simboloSelected = simbolo;
-//						System.out.println("Simbolo encontrado en: " + indexSimboloSelected);
 					}					
 				}			
-//				System.out.println("Este puto " + indexSimboloSelected);
 				if (indexSimboloSelected >= 0) {	
-//					System.out.println("ENTRE???");
-//					System.out.println("Simbolo:" + simboloSelected);
-//					System.out.println("Cadena a analizar:" + cad);
 					if(indexSimboloSelected > 0) {
 						cadAux.add(cad.substring(0, indexSimboloSelected));
 						cadAux.add(simboloSelected);														
 					} else {
 						cadAux.add(simboloSelected);														
 					}
-//					System.out.println(simboloSelected.length());
-//					System.out.println("Start: " + (indexSimboloSelected + simboloSelected.length()) + " END: " + (cad.length() -1));
 					if((indexSimboloSelected + simboloSelected.length()) == cad.length()) {
 						cad = "";
 					} else {
 						cad = cad.substring((indexSimboloSelected + simboloSelected.length()), (cad.length()));
 					}
-//					System.out.println("Resto cad: " + cad);					
 					hasOperator = true;					
 				} 
 				
@@ -382,46 +368,7 @@ public class MethodAnalizer {
 		return Math.log(x) / Math.log(base);
 	}
 	
-	/*
-	 * Los metodos para calcular fanIn y fanOut son facile, esto es lo que saque de otro tp pero hay que terminarlos
-	 */
-	
-	/*
-	public static long calcularFanIn(String codigo, String nombreMetodo) {
 
-		int contadorLlamadas = 0;
-		String[] lineasCodigo = codigo.split("\n");
-
-		for (String linea : lineasCodigo)
-			if (esLlamadaAMetodo(linea))
-				contadorLlamadas++;
-
-		return contadorLlamadas;
-	}
-
-	
-	public static long calcularFanOut(String metodo) {
-
-		// List<String> metodosNoRepetidos = listaMetodos;
-		long contador = 0;
-
-		for (Resultado resultado : listaResultados) {
-
-			String[] lineasCodigo = resultado.getCodigoMetodo().split("/n");
-
-			for (String linea : lineasCodigo)
-				if (linea.contains(metodo))
-					contador++;
-
-		}
-		return contador;
-	}
-	public static boolean esLlamadaAMetodo(String linea) {
-		if (linea.contains(".") && linea.contains("("))
-			return true;
-		return false;
-	}*/
-	
 	public int getCodeLines() {
 		return codeLines;
 	}
@@ -439,7 +386,7 @@ public class MethodAnalizer {
 	}
 
 	public int getCiclomaticComplexity() {
-		return ciclomaticComplexity;
+		return ciclomaticComplexity == 0 ? 0 : ciclomaticComplexity+1;
 	}
 
 	public void setCiclomaticComplexity(int ciclomaticComplexity) {
