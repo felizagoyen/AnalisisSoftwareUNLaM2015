@@ -1,5 +1,6 @@
 package com.unlam.uno.gui;
 
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,7 +18,7 @@ import com.unlam.uno.code.NumberDescription;
 
 public class Main {
 
-	JFrame frmUno;
+	private JFrame frmUno;
 	private JTextField txtNumber;
 	private JTextField txtOutput;
     private JLabel lblOutput;
@@ -34,6 +35,7 @@ public class Main {
 	 */
 	private void initialize() {
 		frmUno = new JFrame();
+		frmUno.setResizable(false);
 		frmUno.setTitle("Uno");
 		frmUno.setBounds(100, 100, 476, 390);
 		frmUno.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -95,6 +97,12 @@ public class Main {
 		btnAbout.setToolTipText("Acerca de ..");
 	}
 	
+	/** Devuelve el frame principal
+	 * 
+	 */
+	public JFrame getFrmUno() {
+		return frmUno;
+	}
 	/** Convierte el numero ingresado por el usario en letras y lo muetra
 	 * 
 	 */

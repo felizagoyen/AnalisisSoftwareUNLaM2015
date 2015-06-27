@@ -10,18 +10,29 @@ import com.unlam.uno.code.ReaderFile;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.util.HashMap;
+import javax.swing.JPasswordField;
 
 public class LoginGui extends JFrame {
+	
 	private static final long serialVersionUID = 1L;
 	private JTextField textFieldUser;
-	private JTextField textFieldPass;
 	HashMap<String,String> users = getUsersFromFile();
-	private LoginGui loginGui;
+	private static LoginGui loginGui;
+	private JPasswordField textFieldPass;
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		loginGui = new LoginGui();
+		loginGui.setVisible(true);
+	}
 	
 	public LoginGui() {
-		
+		setResizable(false);
+		setTitle("Uno");
+		setBounds(400, 200, 400, 220);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(null);
 		
 		JLabel lblUsuario = new JLabel("Usuario");
@@ -37,11 +48,6 @@ public class LoginGui extends JFrame {
 		getContentPane().add(textFieldUser);
 		textFieldUser.setColumns(10);
 		
-		textFieldPass = new JTextField();
-		textFieldPass.setColumns(10);
-		textFieldPass.setBounds(177, 61, 184, 19);
-		getContentPane().add(textFieldPass);
-		
 		final JLabel lblError = new JLabel("");
 		lblError.setForeground(Color.RED);
 		lblError.setBounds(42, 87, 308, 27);
@@ -50,37 +56,31 @@ public class LoginGui extends JFrame {
 		JButton btnLogin = new JButton("Ingresar");
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(textFieldUser.getText() == "" || textFieldPass.getText() == "") {
+				String user = textFieldUser.getText();
+				String pass = new String(textFieldPass.getPassword());
+				if(user.isEmpty() || pass.isEmpty()) {
 					lblError.setText("Debe ingresar usuario y contrasena");
 					lblError.setVisible(true);
 				} else {
-					String pepe = users.get("lala");
-					System.out.println("l");
-					Main window = new Main();
-					window.frmUno.setVisible(true);
-					
+					String password = users.get(user);
+					if(password != null && password.equals(pass)) {
+						Main window = new Main();
+						window.getFrmUno().setVisible(true);
+						loginGui.setVisible(false);
+					} else {
+						lblError.setText("Usuario y contrasena incorrecto");
+						lblError.setVisible(true);
+					}
 				}
 			}
 		});
 		
-		btnLogin.setBounds(133, 126, 117, 25);
+		btnLogin.setBounds(142, 126, 117, 25);
 		getContentPane().add(btnLogin);
-	}
-	
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					LoginGui loginGui = new LoginGui();
-					loginGui.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+		
+		textFieldPass = new JPasswordField();
+		textFieldPass.setBounds(177, 60, 186, 19);
+		getContentPane().add(textFieldPass);
 	}
 	
 	private HashMap<String, String> getUsersFromFile() {
@@ -90,7 +90,7 @@ public class LoginGui extends JFrame {
 		String[] splitLine;
 		
 		try {
-			usersFile = new ReaderFile("users.csv");
+			usersFile = new ReaderFile("resources/users.uno");
 			while((line = usersFile.readLine()) != null) {
 				splitLine = line.split(",");
 				users.put(splitLine[0], splitLine[1]);
@@ -108,5 +108,4 @@ public class LoginGui extends JFrame {
 		
 		return users;
 	}
-	
 }
