@@ -34,6 +34,7 @@ public class Main {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		//Se inicializa valores del frame principal
 		frmUno = new JFrame();
 		frmUno.setResizable(false);
 		frmUno.setTitle("Uno");
@@ -41,15 +42,18 @@ public class Main {
 		frmUno.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmUno.getContentPane().setLayout(null);
 		
+		//Se inicializan valores del panel que contiene los objetos
 		JPanel panel = new JPanel();
 		panel.setBounds(12, 90, 458, 104);
 		frmUno.getContentPane().add(panel);
 		panel.setLayout(null);
-		
+
+		//Se inicializan valores del Label descriptivo
 		JLabel lblNumber = new JLabel("Ingrese nro entero:");
 		lblNumber.setBounds(146, 24, 149, 15);
 		panel.add(lblNumber);
 		
+		//Se inicializan valores del input para ingresar el numero a convertir
 		txtNumber = new JTextField(8);
 		txtNumber.setBounds(117, 51, 208, 28);
 		txtNumber.setToolTipText("El numero debe ser entero mayor a 0 y menor a 20000000");  
@@ -58,11 +62,13 @@ public class Main {
 		PlainDocument doc = (PlainDocument) txtNumber.getDocument();
 	    doc.setDocumentFilter(new IntegerFilter());
 		
+	    //Se inicializan valores del boton que realiza la accion de convertir
 		JButton btnConvert = new JButton("Convertir");
 		btnConvert.setToolTipText("Converte el numero ingresado en letras");  
 		btnConvert.setVerticalTextPosition(AbstractButton.BOTTOM);
 		btnConvert.setHorizontalTextPosition(AbstractButton.CENTER);
-		
+
+		//Accion de escucha del boton para realizar al conversion
 		btnConvert.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				numberToString();
@@ -71,6 +77,7 @@ public class Main {
 		btnConvert.setBounds(111, 200, 240, 58);
 		frmUno.getContentPane().add(btnConvert);
 		
+		//Se inicializan los valores de los componentes del texto de salida
 		txtOutput = new JTextField();
 		txtOutput.setEditable(false);
 		txtOutput.setBounds(29, 302, 413, 28);
@@ -82,7 +89,7 @@ public class Main {
 		lblOutput.setBounds(29, 278, 413, 15);
 		frmUno.getContentPane().add(lblOutput);
 		
-		
+		//Se inicializan valores del componente que muestra informacion del software
 		JButton btnAbout = new JButton("Acerca\n de..\n", GuiUtils.load("resources/about.png", 30, 30));
 		btnAbout.setBounds(342, 9, 105, 69);
 		frmUno.getContentPane().add(btnAbout);

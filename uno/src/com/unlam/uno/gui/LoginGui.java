@@ -29,12 +29,14 @@ public class LoginGui extends JFrame {
 	}
 	
 	public LoginGui() {
+		//Se inicializa valores del Frame principal
 		setResizable(false);
 		setTitle("Uno");
 		setBounds(400, 200, 400, 220);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(null);
 		
+		//Se inicializan valores del label de usuario y contrasena
 		JLabel lblUsuario = new JLabel("Usuario");
 		lblUsuario.setBounds(42, 24, 70, 15);
 		getContentPane().add(lblUsuario);
@@ -43,32 +45,40 @@ public class LoginGui extends JFrame {
 		lblContrasea.setBounds(42, 62, 117, 15);
 		getContentPane().add(lblContrasea);
 		
+		//Se inicializan valores del input de usuario
 		textFieldUser = new JTextField();
 		textFieldUser.setBounds(177, 22, 184, 19);
 		getContentPane().add(textFieldUser);
 		textFieldUser.setColumns(10);
 		
+		//Se inicializan valores del input de contrasena
+		textFieldPass = new JPasswordField();
+		textFieldPass.setBounds(177, 60, 186, 19);
+		getContentPane().add(textFieldPass);
+		
+		//Se inicializan valores del label que informa el error
 		final JLabel lblError = new JLabel("");
 		lblError.setForeground(Color.RED);
 		lblError.setBounds(42, 87, 308, 27);
 		getContentPane().add(lblError);
 		
+		//Se inicializan valores y acciones del boton que valida el login
 		JButton btnLogin = new JButton("Ingresar");
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String user = textFieldUser.getText();
 				String pass = new String(textFieldPass.getPassword());
-				if(user.isEmpty() || pass.isEmpty()) {
-					lblError.setText("Debe ingresar usuario y contrasena");
+				if(user.isEmpty() || pass.isEmpty()) { //Verifica que no esten vacios los campos
+					lblError.setText("Debe ingresar usuario y contrasena"); //Informa que estan vacioes
 					lblError.setVisible(true);
-				} else {
+				} else { //Si no estan vacios
 					String password = users.get(user);
-					if(password != null && password.equals(pass)) {
-						Main window = new Main();
+					if(password != null && password.equals(pass)) { //Valida que sean correctos
+						Main window = new Main(); //Son correctos, entonces abro la ventana del UNO y cierro login
 						window.getFrmUno().setVisible(true);
 						loginGui.setVisible(false);
 					} else {
-						lblError.setText("Usuario y contrasena incorrecto");
+						lblError.setText("Usuario y contrasena incorrecto"); //Informo que los datos ingresados no son correctos
 						lblError.setVisible(true);
 					}
 				}
@@ -77,12 +87,11 @@ public class LoginGui extends JFrame {
 		
 		btnLogin.setBounds(142, 126, 117, 25);
 		getContentPane().add(btnLogin);
-		
-		textFieldPass = new JPasswordField();
-		textFieldPass.setBounds(177, 60, 186, 19);
-		getContentPane().add(textFieldPass);
 	}
 	
+	/** Metodo que obtiene los usuarios y contrasenas del archivo
+	 * @return HashMap<String, String> con usuario,contrasena
+	 */
 	private HashMap<String, String> getUsersFromFile() {
 		HashMap<String,String> users = new HashMap<String,String>();
 		ReaderFile usersFile = null;
@@ -90,8 +99,8 @@ public class LoginGui extends JFrame {
 		String[] splitLine;
 		
 		try {
-			usersFile = new ReaderFile("resources/users.uno");
-			while((line = usersFile.readLine()) != null) {
+			usersFile = new ReaderFile("resources/users.uno"); //Se crea el archivo
+			while((line = usersFile.readLine()) != null) { //Guardo los usuarios en el mapa
 				splitLine = line.split(",");
 				users.put(splitLine[0], splitLine[1]);
 			}
