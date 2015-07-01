@@ -67,6 +67,7 @@ public class Analizer {
 				allResults.get(i).calcComments(line);
 				allResults.get(i).complejidadCiclomatica(line);
 				allResults.get(i).halsteadLine(line);
+				allResults.get(i).getFunctions(line);
 				if(!allResults.get(i).isMethodString(line)) {
 					
 					for (int j = 0; j < functionsFromLine.size(); j++) {
