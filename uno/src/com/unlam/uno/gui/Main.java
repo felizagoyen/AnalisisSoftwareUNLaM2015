@@ -1,6 +1,5 @@
 package com.unlam.uno.gui;
 
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,6 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.text.PlainDocument;
 
+import com.unlam.uno.code.Logger;
 import com.unlam.uno.code.NumberDescription;
 
 public class Main {
@@ -22,7 +22,7 @@ public class Main {
 	private JTextField txtNumber;
 	private JTextField txtOutput;
     private JLabel lblOutput;
-    
+    private Logger logger = Logger.getInstance();
 	/**
 	 * Create the application.
 	 */
@@ -41,6 +41,16 @@ public class Main {
 		frmUno.setBounds(100, 100, 476, 390);
 		frmUno.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmUno.getContentPane().setLayout(null);
+		
+		//Se cierra archivo de log cuando termina el programa
+		frmUno.addWindowListener(new java.awt.event.WindowAdapter() {
+		    @Override
+		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+		    	logger.info("El usuario ha cerrado el programa");
+		    	logger.closeFile();
+		    	System.exit(0);
+		    }
+		});
 		
 		//Se inicializan valores del panel que contiene los objetos
 		JPanel panel = new JPanel();
@@ -119,6 +129,7 @@ public class Main {
 		// se controla que el numero exista
 		if( number.isEmpty() )
 		{
+			logger.info("Campo vacio");
 			JOptionPane.showMessageDialog(frmUno, "El campo no puede ser vacio");
 			return;
 		}
@@ -127,6 +138,7 @@ public class Main {
 		Integer num = Integer.parseInt(number);
 		if( num > 20000000 )
 		{
+			logger.info("Se ha ingresado un numero que excede el rango. El numero es: " + number);
 			JOptionPane.showMessageDialog(frmUno, "Error: el rango es 0-20000000");
 			return;
 		}
@@ -138,6 +150,8 @@ public class Main {
 		// se informa al usuario el resultado
 		lblOutput.setText("El numero " + number + " se escribe:");
 		txtOutput.setText( res );
+		
+		logger.info("El numero " + number + " se ha convertido correctamente a: " + res);
 	}
 	
 	/** Muestra la pantalla Acerca de ..
@@ -145,11 +159,12 @@ public class Main {
 	 */
 	private void showAboutUsWindow() {
 		try {
+			logger.info("Accediendo a ventana Acerca de...");
 			AboutUsFrame aboutus = new AboutUsFrame();
 			aboutus.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			aboutus.setVisible(true);
-			
 		} catch (Exception e2) {
+			logger.error("Ha ocurrido un error abriendo la ventana de Acerca de...");
 			e2.printStackTrace();
 		}
 	}

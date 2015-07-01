@@ -5,12 +5,14 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import com.unlam.uno.code.Logger;
 import com.unlam.uno.code.ReaderFile;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 import java.util.HashMap;
+
 import javax.swing.JPasswordField;
 
 public class LoginGui extends JFrame {
@@ -20,6 +22,7 @@ public class LoginGui extends JFrame {
 	HashMap<String,String> users = getUsersFromFile();
 	private static LoginGui loginGui;
 	private JPasswordField textFieldPass;
+	private Logger logger = Logger.getInstance();
 	/**
 	 * Launch the application.
 	 */
@@ -35,6 +38,16 @@ public class LoginGui extends JFrame {
 		setBounds(400, 200, 400, 220);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(null);
+		
+		//Se cierra archivo de log cuando termina el programa
+		addWindowListener(new java.awt.event.WindowAdapter() {
+		    @Override
+		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+		    	logger.info("El usuario ha cerrado el programa");
+		    	logger.closeFile();
+		    	System.exit(0);
+		    }
+		});
 		
 		//Se inicializan valores del label de usuario y contrasena
 		JLabel lblUsuario = new JLabel("Usuario");
@@ -74,10 +87,13 @@ public class LoginGui extends JFrame {
 				} else { //Si no estan vacios
 					String password = users.get(user);
 					if(password != null && password.equals(pass)) { //Valida que sean correctos
+						logger.setUser(user);
+						logger.info("El usuario " + user + " se ha conectado");
 						Main window = new Main(); //Son correctos, entonces abro la ventana del UNO y cierro login
 						window.getFrmUno().setVisible(true);
 						loginGui.setVisible(false);
 					} else {
+						logger.warn("Intento invalido de acceso");
 						lblError.setText("Usuario y contrasena incorrecto"); //Informo que los datos ingresados no son correctos
 						lblError.setVisible(true);
 					}
@@ -106,12 +122,14 @@ public class LoginGui extends JFrame {
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
+			logger.error("Ha ocurrido un error al leer el archivo de usuarios");
 		} finally {
 			try {
 				if(usersFile != null) 
 					usersFile.close();
 			} catch(Exception e2) {
 				e2.printStackTrace();
+				logger.error("Ha ocurrido un error al cerrar el archivo de usuarios");
 			}
 		}
 		
