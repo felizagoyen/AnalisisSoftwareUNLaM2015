@@ -44,7 +44,6 @@ public class LoginGui extends JFrame {
 		    @Override
 		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
 		    	logger.info("El usuario ha cerrado el programa");
-		    	logger.closeFile();
 		    	System.exit(0);
 		    }
 		});

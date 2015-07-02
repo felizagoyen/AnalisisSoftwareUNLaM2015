@@ -16,12 +16,6 @@ public class Logger {
 		
 	//Constructor privado para singleton
 	private Logger() {
-		try {
-			this.file = new FileWriter("resources/log");
-			this.pw = new PrintWriter(file);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	//Instancia del singleton
@@ -42,7 +36,16 @@ public class Logger {
 		DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
 		Date date = new Date();
 		String message = type + " [" + dateFormat.format(date) + "] [" + this.user + "] " + msg;
-		pw.println(message);
+		try {
+			this.file = new FileWriter("resources/log", true);
+			this.pw = new PrintWriter(file);
+			pw.println(message);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (pw != null)
+				pw.close();
+		}
 	}
 	
 	/** Information message
@@ -67,10 +70,5 @@ public class Logger {
 	 */
 	public void error(String msg) {
 		logMessage("ERROR", msg);
-	}
-	
-	public void closeFile() {
-		if (pw != null)
-			pw.close();
 	}
 }

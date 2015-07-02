@@ -1,10 +1,10 @@
-WARN [02:25:49 29/06/2015] [-] Intento invalido de acceso
-INFO [02:25:57 29/06/2015] [fernando] El usuario fernando se ha conectado
-INFO [02:26:04 29/06/2015] [fernando] El numero 123 se ha convertido correctamente a: ciento veintitres
-INFO [02:26:04 29/06/2015] [fernando] Accediendo a ventana Acerca de...
-INFO [02:26:07 29/06/2015] [fernando] El numero 123 se ha convertido correctamente a: ciento veintitres
-INFO [02:26:09 29/06/2015] [fernando] El numero 123 se ha convertido correctamente a: ciento veintitres
-INFO [02:26:12 29/06/2015] [fernando] Campo vacio
-INFO [02:26:16 29/06/2015] [fernando] El numero 12312312 se ha convertido correctamente a: doce millones trescientos doce  mil trescientos doce 
-INFO [02:26:22 29/06/2015] [fernando] Se ha ingresado un numero que excede el rango. El numero es: 22222222
-INFO [02:26:26 29/06/2015] [fernando] El usuario ha cerrado el programa
+INFO [23:53:13 01/07/2015] [-] El usuario ha cerrado el programaWARN [23:53:41 01/07/2015] [-] Intento invalido de acceso
+WARN [23:53:41 01/07/2015] [-] Intento invalido de acceso
+WARN [23:53:41 01/07/2015] [-] Intento invalido de acceso
+WARN [23:53:42 01/07/2015] [-] Intento invalido de acceso
+WARN [23:53:42 01/07/2015] [-] Intento invalido de acceso
+WARN [23:53:42 01/07/2015] [-] Intento invalido de acceso
+WARN [23:53:42 01/07/2015] [-] Intento invalido de acceso
+WARN [23:53:42 01/07/2015] [-] Intento invalido de acceso
+INFO [23:53:47 01/07/2015] [-] El usuario ha cerrado el programa
+INFO [23:53:56 01/07/2015] [fernando] El usuario fernando se ha conectado
