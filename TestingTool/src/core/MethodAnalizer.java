@@ -53,9 +53,12 @@ public class MethodAnalizer {
 		line = line.replace("\t", "").replace("( )+", " ").trim();
 		line = normalizeCodeLine(line);
 		String[] splitedLine = line.split(" ");
+		//System.out.println(line);
+		 
 		String cadAnterior = ""; // Se analiza como posible funcion, si en la siguiente cadena se encuentra un "(" se toma que cadAnterior es una funcion			
 		for(String cad : splitedLine) {
-			if(cad.equals("(") && !cadAnterior.equals("")) {					
+			if(cad.equals("(") && !cadAnterior.equals("")) {		
+				System.out.println(cadAnterior);
 				this.reference = cadAnterior;
 				this.isFunction = true;		
 				break;

@@ -67,10 +67,10 @@ public class Analizer {
 				allResults.get(i).calcComments(line);
 				allResults.get(i).complejidadCiclomatica(line);
 				allResults.get(i).halsteadLine(line);
-				allResults.get(i).getFunctions(line);
+				functionsFromLine = allResults.get(i).getFunctions(line);
 				if(!allResults.get(i).isMethodString(line)) {
 					
-					for (int j = 0; j < functionsFromLine.size(); j++) {
+					for (int j = 0; j < functionsFromLine.size(); j++) {						
 						if(!allFunctions.containsKey(functionsFromLine.get(j))) {
 							allFunctions.put(functionsFromLine.get(j), 1);
 						} else {
@@ -109,14 +109,19 @@ public class Analizer {
 		this.allResults.addAll(newResults);
 		for (int i = 0; i < allResults.size(); i++) {			
 			allResults.get(i).calcularHalstead();
-			for (Map.Entry<String, Integer> entry : allFunctions.entrySet()) {
-			    String key = entry.getKey();
-			    int value = entry.getValue();
-			    if(key.equals(allResults.get(i).getReference()) ) {
-			    	allResults.get(i).setFanIn(value);
-			    }
-			    System.out.println(key + " " + value);
+			if(allResults.get(i).isFunction()) {
+				for (Map.Entry<String, Integer> entry : allFunctions.entrySet()) {
+					
+				    String key = entry.getKey();
+				    int value = entry.getValue();
+				    
+				    if(key.equals(allResults.get(i).getReference().split(" ")[1]) ) {
+				    	allResults.get(i).setFanIn(value);
+				    }
+				    
+				}
 			}
+			
 		}
 		
 		
