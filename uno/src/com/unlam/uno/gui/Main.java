@@ -65,7 +65,7 @@ public class Main {
 		//Se inicializan valores del input para ingresar el numero a convertir
 		txtNumber = new JTextField(8);
 		txtNumber.setBounds(117, 51, 208, 28);
-		txtNumber.setToolTipText("El numero debe ser entero mayor a 0 y menor a 20000000");  
+		txtNumber.setToolTipText("El numero debe ser entero, mayor o igual a 0 y menor o igual a 20.000.000");  
 		panel.add(txtNumber);
 		
 		PlainDocument doc = (PlainDocument) txtNumber.getDocument();

@@ -1,7 +1,6 @@
 package vistas;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -17,13 +16,11 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import net.miginfocom.swing.MigLayout;
-import core.Analizer;
-import javax.swing.JScrollBar;
-import java.awt.FlowLayout;
 import javax.swing.JScrollPane;
 
 public class layoutBase extends JFrame {
 
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField txtPath;
 	private JTextField txtPorcentajeDeComentarios;
@@ -77,7 +74,6 @@ public class layoutBase extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				String path = openFileChooser();
 				if (path != null) {
-					Analizer analyzer = new Analizer(path);
 					//labelPercent.setText("% " + analyzer.fileSearch());
 				} else {
 					//labelPercent.setText("%0");

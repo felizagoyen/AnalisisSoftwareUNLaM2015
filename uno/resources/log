@@ -8,3 +8,27 @@ WARN [23:53:42 01/07/2015] [-] Intento invalido de acceso
 WARN [23:53:42 01/07/2015] [-] Intento invalido de acceso
 INFO [23:53:47 01/07/2015] [-] El usuario ha cerrado el programa
 INFO [23:53:56 01/07/2015] [fernando] El usuario fernando se ha conectado
+INFO [23:55:49 01/07/2015] [fernando] El usuario ha cerrado el programa
+INFO [13:02:39 13/07/2015] [uno] El usuario uno se ha conectado
+INFO [13:02:50 13/07/2015] [uno] El numero 20000000 se ha convertido correctamente a: veinte  milllones 
+INFO [13:02:55 13/07/2015] [uno] Se ha ingresado un numero que excede el rango. El numero es: 20000001
+INFO [13:03:05 13/07/2015] [uno] El usuario ha cerrado el programa
+INFO [13:04:58 13/07/2015] [uno] El usuario uno se ha conectado
+INFO [13:05:07 13/07/2015] [uno] Campo vacio
+INFO [13:05:11 13/07/2015] [uno] El numero 11111111 se ha convertido correctamente a: once millones ciento once  mil ciento once 
+INFO [13:05:14 13/07/2015] [uno] Se ha ingresado un numero que excede el rango. El numero es: 99999999
+INFO [13:05:23 13/07/2015] [uno] El numero 00000000 se ha convertido correctamente a: cero
+INFO [13:05:26 13/07/2015] [uno] El usuario ha cerrado el programa
+INFO [13:06:09 13/07/2015] [uno] El usuario uno se ha conectado
+INFO [13:06:13 13/07/2015] [uno] Se ha ingresado un numero que excede el rango. El numero es: 99999999
+INFO [13:06:33 13/07/2015] [uno] Accediendo a ventana Acerca de...
+INFO [13:07:05 13/07/2015] [uno] El usuario ha cerrado el programa
+INFO [13:09:00 13/07/2015] [uno] El usuario uno se ha conectado
+INFO [13:09:02 13/07/2015] [uno] Accediendo a ventana Acerca de...
+INFO [13:09:11 13/07/2015] [uno] El usuario ha cerrado el programa
+INFO [13:09:26 13/07/2015] [uno] El usuario uno se ha conectado
+INFO [13:09:28 13/07/2015] [uno] Accediendo a ventana Acerca de...
+INFO [13:09:41 13/07/2015] [uno] El usuario ha cerrado el programa
+INFO [13:10:01 13/07/2015] [uno] El usuario uno se ha conectado
+INFO [13:10:03 13/07/2015] [uno] Accediendo a ventana Acerca de...
+INFO [13:10:26 13/07/2015] [uno] El usuario ha cerrado el programa

@@ -39,10 +39,10 @@ public class AboutUsFrame extends JFrame {
 	              "\tFernando Elizagoyen\n" +
 	              "\tMatias Pascual\n" +
 	              "\tBrian De Diego\n\n"+
-	              "  El programa UNO toma valores enteros entre 0 y\n" +
-	              "20.000.000, traduciendolo en letras. Este mismo\n" +
-	              "programa como su codigo se utilizo para aplicar\n"+
-	              "algoritmos de calidad con fines didacticos.\n" );
+	              "  El programa UNO toma valores enteros entre 0\n" +
+	              "y 20.000.000 inclusive, traduciendolo en letras. \n" +
+	              "Este mismo programa como su codigo se utilizo para \n" +
+	              "aplicar algoritmos de calidad con fines didacticos.\n" );
 
 		txtProduction.setAlignmentX(AbstractButton.CENTER);
 		txtProduction.setAlignmentY(AbstractButton.CENTER);
